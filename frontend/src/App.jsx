@@ -3,6 +3,7 @@ import { useState } from 'react';
 import Navbar from './component/Navebar/Navbar'; 
 import { Routes, Route, BrowserRouter } from 'react-router-dom';
 import Footer from './component/Footer/Footer';
+import Home from './Page/Home/Home'; 
 
 function App() {
   const [login, setLogin] = useState(false);
@@ -12,8 +13,7 @@ function App() {
       <div className="App">
         <Navbar login={login} setLogin={setLogin} />
         <Routes>
-          <Route path="/" element={<h1>Home Page</h1>} /> 
-          
+          <Route path="/" element={<Home />} />
         </Routes>
         <Footer />
       </div>
