@@ -5,6 +5,7 @@ function Navbar({ login, setLogin }) {
 
 
   return (
+    <>
     <div className='navbar'>
       <div className='navbar__logo'>
         <h1>Gen Img</h1>
@@ -21,7 +22,8 @@ function Navbar({ login, setLogin }) {
           </li>
         </ul>
       </div>
-  
+      <div className='line'></div>
+  </>
   )
 }
 

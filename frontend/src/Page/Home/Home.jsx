@@ -1,10 +1,11 @@
 import React from 'react'
 import Hero from '../../component/Hero/Hero'
 
-function Home() {
+         
+function Home(login, setLogin) {
   return (
    <>
-   <Hero />
+   <Hero setLogin={setLogin}/>
    </>
   )
 }
