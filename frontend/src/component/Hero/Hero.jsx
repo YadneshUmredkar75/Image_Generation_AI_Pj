@@ -16,7 +16,7 @@ const Hero = ( setLogin) => {
   return (
     <div className="hero">
       <div className='contener'>
-        <button onClick={handleClick}>Start to generate an image</button>
+        <button onClick={handleClick}>Start to generate a image</button>
       </div>
     </div>
   );
