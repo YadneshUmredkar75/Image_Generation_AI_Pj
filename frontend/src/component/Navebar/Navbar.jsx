@@ -1,30 +1,31 @@
-import React from 'react';  
-import './Navbar.css';
-
+import React from "react";
+import "./Navbar.css";
+import { Link } from "react-router-dom";
 function Navbar({ login, setLogin }) {
-
-
   return (
     <>
-    <div className='navbar'>
-      <div className='navbar__logo'>
-        <h1>Gen Img</h1>
-      </div>
-       
+      <div className="navbar">
+        <div className="navbar__logo">
+          <h1>Gen Img</h1>
+        </div>
+
         <ul>
-         
           <li>
             {login ? (
-              <button onClick={() => setLogin(false)}>Sign Up</button>
+              <Link to="/signup">
+                <button onClick={() => setLogin(false)}>Sign Up</button>
+              </Link>
             ) : (
-              <button onClick={() => setLogin(true)}>Login</button>
+              <Link to="/login">
+                <button onClick={() => setLogin(true)}>Login</button>
+              </Link>
             )}
           </li>
         </ul>
       </div>
-      <div className='line'></div>
-  </>
-  )
+      <div className="line"></div>
+    </>
+  );
 }
 
 export default Navbar;

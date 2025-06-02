@@ -1,18 +1,19 @@
 import React from "react";
-import "./Login.css";
+import "./Signup.css";
 
-const Login = () => {
+const SignUp = () => {
   return (
     <div className="auth-container">
       <div className="auth-box">
-        <h2>Login</h2>
+        <h2>Sign Up</h2>
+        <input type="text" placeholder="Name" />
         <input type="email" placeholder="Email" />
         <input type="password" placeholder="Password" />
-        <button>Login</button>
-        <p>Don't have an account? Sign up</p>
+        <button>Sign Up</button>
+        <p>Already have an account? Login</p>
       </div>
     </div>
   );
 };
 
-export default Login;
+export default SignUp;
