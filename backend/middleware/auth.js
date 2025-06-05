@@ -1,22 +1,24 @@
-import { verifyToken } from '../utils/jwt.js';
+import jwt from 'jsonwebtoken';
+import { config } from '../config.js';
 
 export const authMiddleware = async (req, res, next) => {
-  try {
-   
-    const token = req.header('Authorization')?.replace('Bearer ', '');
+    const JWT_SECRET = process.env.JWT_SECRET || config.jwtSecret;
+    
+    try {
+       
+        const token = req.header('Authorization')?.replace('Bearer ', '');
+        
+        if (!token) {
+            return res.status(401).json({ error: 'No token provided' });
+        }
 
-    if (!token) {
-      return res.status(401).json({ error: 'No token provided' });
+       
+           const decoded = jwt.verify(token, JWT_SECRET)
+      
+        req.userId = decoded.id;
+
+        next();
+    } catch (error) {
+        res.status(401).json({ error: 'Invalid token' });
     }
-
-    
-    const decoded = verifyToken(token);
-
-    
-    req.userId = decoded.id;
-
-    next();
-  } catch (error) {
-    res.status(401).json({ error: 'Invalid token' });
-  }
 };
