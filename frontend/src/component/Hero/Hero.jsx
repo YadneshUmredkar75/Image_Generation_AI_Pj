@@ -8,7 +8,7 @@ const Hero = ( setLogin) => {
     if (setLogin) {
       navigate('/genimage');
     } else {
-      alert('Please sign up or login first to generate images');
+      navigate('/login');
       
     }
   };
@@ -16,7 +16,8 @@ const Hero = ( setLogin) => {
   return (
     <div className="hero">
       <div className='contener'>
-        <button onClick={handleClick}>Start to generate a image</button>
+        <button onClick={handleClick}/>
+        {setLogin ? 'Start to generate an image' : 'Login to generate images'}
       </div>
     </div>
   );
