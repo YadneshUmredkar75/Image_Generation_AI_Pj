@@ -8,11 +8,6 @@ import GenImg from "./Page/GenImg/GenImg";
 import Login from "./Page/Login/Login";
 import Signup from "./Page/signup/Signup";
 
-/*
-  Fix the import casing to match the actual file path.
-  Change:
-  To:
-*/
 function App() {
   const [login, setLogin] = useState(false);
 
@@ -30,7 +25,7 @@ function App() {
             path="/"
             element={<Home setLogin={setLogin} login={login} />}
           />
-          <Route path="/generate" element={<GenImg />} />
+          <Route path="/genimage" element={<GenImg />} />
         </Routes>
         <Footer />
       </div>

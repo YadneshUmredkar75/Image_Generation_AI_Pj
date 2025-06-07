@@ -1,7 +1,7 @@
 import express from 'express';
 import { HfInference } from '@huggingface/inference';
 import { v2 as cloudinary } from 'cloudinary';
-import Image from '../models/Image.js';
+import Image from '../models/ImageGen.js';
 import dotenv from 'dotenv';
 
 dotenv.config();
