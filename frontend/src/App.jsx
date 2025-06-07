@@ -30,7 +30,7 @@ function App() {
             path="/"
             element={<Home setLogin={setLogin} login={login} />}
           />
-          <Route path="/genimage" element={<GenImg />} />
+          <Route path="/generate" element={<GenImg />} />
         </Routes>
         <Footer />
       </div>

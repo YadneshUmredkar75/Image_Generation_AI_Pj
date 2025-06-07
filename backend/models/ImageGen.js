@@ -1,11 +1,20 @@
 import mongoose from 'mongoose';
 
-const imageGenerationSchema = new mongoose.Schema({
-  user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  prompt: { type: String, required: true },
-  modelUsed: { type: String, enum: ['StableDiffusion', 'DALL-E', 'MidJourney'], required: true },
-  imageUrl: { type: String, required: true },
- 
-}, { timestamps: true });
+const ImageSchema = new mongoose.Schema({
+  prompt: { 
+    type: String, 
+    required: true 
+  },
+  imageUrl: { 
+    type: String, 
+    required: true 
+  },
+  createdAt: { 
+    type: Date, 
+    default: Date.now 
+  }
+});
 
-export default mongoose.model('GeneratedImage', imageGenerationSchema);
+const Image = mongoose.model('Image', ImageSchema);
+
+export default Image;

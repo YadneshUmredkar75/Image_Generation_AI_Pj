@@ -1,40 +1,69 @@
 import express from 'express';
-import huggingFaceClient from '../utils/huggingFaceClient.js';
-import GeneratedImage from '../models/ImageGen.js';
+import { HfInference } from '@huggingface/inference';
+import { v2 as cloudinary } from 'cloudinary';
+import Image from '../models/Image.js';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const router = express.Router();
+const hf = new HfInference(process.env.HF_API_TOKEN);
 
-router.post('/', async (req, res) => {
-  const { prompt, user, modelUsed = 'StableDiffusion' } = req.body;
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+});
 
-  if (!prompt || !prompt.trim()) {
-    return res.status(400).json({ error: 'Prompt is required' });
-  }
-
+// Generate image
+router.post('/generate', async (req, res) => {
   try {
-    // Call Hugging Face API to generate image
-    const response = await huggingFaceClient.post(
-      '',
-      { inputs: prompt },
-      { responseType: 'arraybuffer' } // ensure binary data received
-    );
+    const { prompt } = req.body;
+    if (!prompt) {
+      return res.status(400).json({ error: 'Prompt is required' });
+    }
 
-    // Convert binary data to base64 string
-    const base64Image = Buffer.from(response.data, 'binary').toString('base64');
-    const imageUrl = `data:image/png;base64,${base64Image}`;
-
-    // Save generated image to database (optional)
-    const newImage = await GeneratedImage.create({
-      user,
-      prompt,
-      modelUsed,
-      imageUrl,
+    // Generate image using Hugging Face API
+    const response = await hf.textToImage({
+      model: 'stabilityai/stable-diffusion-xl-base-1.0',
+      inputs: prompt,
+      parameters: {
+        negative_prompt: 'blurry, low quality',
+        num_inference_steps: 50,
+      },
     });
 
-    res.json({ imageUrl });
+    // Convert image buffer to base64
+    const buffer = Buffer.from(await response.arrayBuffer());
+    const base64Image = `data:image/png;base64,${buffer.toString('base64')}`;
+
+    // Upload to Cloudinary
+    const cloudinaryResult = await cloudinary.uploader.upload(base64Image, {
+      folder: 'ai-images',
+    });
+
+    // Save to MongoDB
+    const newImage = new Image({
+      prompt,
+      imageUrl: cloudinaryResult.secure_url,
+    });
+    await newImage.save();
+
+    res.json({ imageUrl: cloudinaryResult.secure_url, prompt });
   } catch (error) {
-    console.error('Error generating image:', error.response?.data || error.message || error);
+    console.error('Error generating image:', error);
     res.status(500).json({ error: 'Failed to generate image' });
+  }
+});
+
+// Get all images
+router.get('/images', async (req, res) => {
+  try {
+    const images = await Image.find().sort({ createdAt: -1 });
+    res.json(images);
+  } catch (error) {
+    console.error('Error fetching images:', error);
+    res.status(500).json({ error: 'Failed to fetch images' });
   }
 });
 
