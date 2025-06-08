@@ -1,21 +1,35 @@
 import { createContext, useState, useEffect } from "react";
 
-export const StoreContext = createContext(null);
+export const StoreContext = createContext({
+  showLogin: false,
+  setShowLogin: () => {},
+  isLoggedIn: false,
+  setIsLoggedIn: () => {},
+  token: null,
+  setToken: () => {},
+});
 
 const StoreProvider = ({ children }) => {
   const [showLogin, setShowLogin] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [token, setTokenState] = useState(localStorage.getItem("token") || null);
+  const [token, setTokenState] = useState(
+    localStorage.getItem("token") || null
+  );
 
   useEffect(() => {
     const savedToken = localStorage.getItem("token");
     if (savedToken) {
+      console.log("StoreProvider: Found token in localStorage:", savedToken);
       setIsLoggedIn(true);
-      setTokenState(savedToken);
+      // Optional: Validate token (e.g., decode JWT or API call)
+      // Example: if (isTokenValid(savedToken)) { setIsLoggedIn(true); }
+    } else {
+      console.log("StoreProvider: No token found in localStorage");
     }
   }, []);
 
   const setToken = (newToken) => {
+    console.log("StoreProvider: Setting token:", newToken);
     if (newToken) {
       localStorage.setItem("token", newToken);
       setIsLoggedIn(true);

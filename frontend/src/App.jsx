@@ -1,6 +1,6 @@
 import "./App.css";
 import { useContext } from "react";
-import { Routes, Route, BrowserRouter } from "react-router-dom";
+import { Routes, Route, BrowserRouter, useNavigate } from "react-router-dom";
 import Navbar from "./component/Navebar/Navbar";
 import Footer from "./component/Footer/Footer";
 import Home from "./Page/Home/Home";
@@ -16,17 +16,15 @@ function App() {
   return (
     <BrowserRouter>
       <ToastContainer />
-      {showLogin && <Login />} {/* This is the popup/modal version */}
-
-      <div className='app'>
+      {showLogin && <Login />}
+      <div className="app">
         <Navbar />
         <Routes>
-          <Route path='/' element={<Home />} />
-          <Route path='/genimage' element={<GenImg />} />
-          {/* Remove /login if using popup */}
+          <Route path="/" element={<Home />} />
+          <Route path="/genimage" element={<GenImg />} />
+          {/* No /login route since login is popup */}
         </Routes>
       </div>
-
       <Footer />
     </BrowserRouter>
   );
