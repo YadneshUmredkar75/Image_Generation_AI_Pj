@@ -1,34 +1,33 @@
 import "./App.css";
-import { useState } from "react";
+import { useContext } from "react";
 import { Routes, Route, BrowserRouter } from "react-router-dom";
 import Navbar from "./component/Navebar/Navbar";
 import Footer from "./component/Footer/Footer";
 import Home from "./Page/Home/Home";
 import GenImg from "./Page/GenImg/GenImg";
-import Login from "./Page/Login/Login";
-import Signup from "./Page/signup/Signup";
+import Login from "./component/Login/Login";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { StoreContext } from "./component/StorContext/StoreContext";
 
 function App() {
-  const [login, setLogin] = useState(false);
+  const { showLogin } = useContext(StoreContext);
 
   return (
     <BrowserRouter>
-      <div className="App">
-        <Navbar login={login} setLogin={setLogin} />
+      <ToastContainer />
+      {showLogin && <Login />} {/* This is the popup/modal version */}
+
+      <div className='app'>
+        <Navbar />
         <Routes>
-          {login ? (
-            <Route path="/login" element={<Login />} />
-          ) : (
-            <Route path="/signup" element={<Signup />} />
-          )}
-          <Route
-            path="/"
-            element={<Home setLogin={setLogin} login={login} />}
-          />
-          <Route path="/genimage" element={<GenImg />} />
+          <Route path='/' element={<Home />} />
+          <Route path='/genimage' element={<GenImg />} />
+          {/* Remove /login if using popup */}
         </Routes>
-        <Footer />
       </div>
+
+      <Footer />
     </BrowserRouter>
   );
 }

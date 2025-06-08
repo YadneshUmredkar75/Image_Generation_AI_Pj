@@ -1,11 +1,12 @@
 import React from "react";
 import Hero from "../../component/Hero/Hero";
 import AboutProject from "../../component/AboutProject/AboutProject";
+import { useState, useEffect } from "react";
+function Home( ) {
 
-function Home(login, setLogin) {
   return (
     <>
-      <Hero setLogin={setLogin} />
+      <Hero  />
       <AboutProject />
     </>
   );
